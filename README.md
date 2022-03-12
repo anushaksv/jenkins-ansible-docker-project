@@ -17,9 +17,9 @@ The process should be initiated from a new commit to a specific branch of a GitH
 
 Here we use amazon linux on these 3 servers.
 
-### CI/CD Server
+## CI/CD Server
 
-Installing Jenkins:-
+**Installing Jenkins:-**
 ```html
 # amazon-linux-extras install epel -y
 # yum install java-1.8.0-openjdk-devel -y
@@ -30,13 +30,14 @@ Installing Jenkins:-
 # systemctl enable jenkins.service
 ```
 
-Installing Git and Ansible:-
+**Installing Git and Ansible:-**
 ```html
 # yum install git -y
 # amazon-linux-extras install ansible2 -y
 ```
 
-Ansible hosts file:- 
+## Ansible Inventory
+
 ```html
 [build]
 172.31.38.221  ansible_user="ec2-user"
@@ -45,7 +46,8 @@ Ansible hosts file:-
 172.31.42.62 ansible_user="ec2-user"
 ```
 
-Ansible Playbook:- 
+## Ansible Playbook
+
 ```html
 ---
 - name: "Building docker image on 'Build' server from Git repo"
@@ -194,16 +196,36 @@ Ansible Playbook:-
         body: New Github code commit found. Image builed and tested.
 ```
 
-Configuring Jenkins:-
+## Configuring Jenkins
+
 1. Install Ansible plugin in Jenkins through "Manage Jenkins" option
 2. Add Ansible binary path through Jenkins Global Tool Configuration
 3. Create new Job in Jenkins by doing the following steps
-  - Add the GitHub repository URL
-  - Add SSH private key and Ansible Vault Credentials
-  - Select GitHub hook trigger for GITScm polling
-  - Select Build as Ansible
-  - Add Playbook path as /var/deployment/main-playbook.yml
-  - Disable the host SSH key check
+- Add the GitHub repository URL
+- Add SSH private key and Ansible Vault Credentials
+- Select GitHub hook trigger for GITScm polling
+- Select Build as Ansible
+- Add Playbook path as /var/deployment/main-playbook.yml
+- Disable the host SSH key check
 
+## Jenkins manual Build
 
+Once the Job is created, click on "Build now" and check the Console Output and verify everything is fine.
 
+## Automatically trigger each build on the Jenkins server, after each Commit on your Git repository
+
+For this, add the Jenkins Payload URL in GitHub repository's Webhook
+
+![webhook](https://user-images.githubusercontent.com/97517424/158008753-81c8ec13-1c16-4ef3-9980-e8200ca283c6.png)
+
+## Check the console output through Jenkins after a new commit on your Git repository
+
+![jenkins3](https://user-images.githubusercontent.com/97517424/158008815-9ff099e5-57c4-4725-85f9-6531e33c23d5.png)
+
+![jenkins4](https://user-images.githubusercontent.com/97517424/158008827-67e85daf-e9dc-4989-88a2-a24f2ba85283.png)
+
+## Result
+
+A new image is pushed to Docker Hub from the 'Build' host, which is pulled by 'Test' host to create a Docker Container.
+
+![dockerhub](https://user-images.githubusercontent.com/97517424/158009154-72a5820a-c508-42cd-9e3b-17560c627512.png)
