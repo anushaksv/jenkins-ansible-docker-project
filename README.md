@@ -201,12 +201,12 @@ Here we use amazon linux on these 3 servers.
 1. Install Ansible plugin in Jenkins through "Manage Jenkins" option
 2. Add Ansible binary path through Jenkins Global Tool Configuration
 3. Create new Job in Jenkins by doing the following steps
-- Add the GitHub repository URL
-- Add SSH private key and Ansible Vault Credentials
-- Select GitHub hook trigger for GITScm polling
-- Select Build as Ansible
-- Add Playbook path as /var/deployment/main-playbook.yml
-- Disable the host SSH key check
+   - Add the GitHub repository URL
+   - Add SSH private key and Ansible Vault Credentials
+   - Select GitHub hook trigger for GITScm polling
+   - Select Build as Ansible
+   - Add Playbook path as /var/deployment/main-playbook.yml
+   - Disable the host SSH key check
 
 ## Jenkins manual Build
 
